@@ -35,11 +35,40 @@ export PORT=8080
 ```
 
 ## 如何執行
+
+### 方法一：直接執行
 1. 確保已安裝 Go 1.24 或以上版本
 2. 設定必要的環境變數
 3. 執行服務：
 ```bash
 go run main.go
+```
+
+### 方法二：使用 Docker（建議）
+1. 建構映像檔：
+```bash
+docker build -t email-service .
+```
+
+2. 運行容器：
+```bash
+docker run -d \
+  -p 8080:8080 \
+  -e SMTP_HOST=smtp.gmail.com \
+  -e SMTP_PORT=587 \
+  -e SMTP_USERNAME=your@gmail.com \
+  -e SMTP_PASSWORD=your-password \
+  --name email-service \
+  email-service
+```
+
+或者使用環境變數檔案：
+```bash
+docker run -d \
+  -p 8080:8080 \
+  --env-file .env \
+  --name email-service \
+  email-service
 ```
 
 ## API 使用說明
@@ -76,3 +105,7 @@ go run main.go
 1. 使用 Gmail SMTP 時，需要在 Google 帳號設定中開啟「低安全性應用程式存取權」或使用應用程式密碼
 2. 郵件內容支援 HTML 格式
 3. 建議在正式環境中使用環境變數來設定 SMTP 配置
+4. 使用 Docker 時，建議：
+   - 在正式環境中使用特定版本標籤，而不是 latest
+   - 使用 docker-compose 來管理服務（如果是較大的系統）
+   - 定期更新基礎映像檔以修補安全漏洞

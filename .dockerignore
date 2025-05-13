@@ -1,0 +1,11 @@
+# Git相關
+.git
+.gitignore
+
+# 環境檔案
+.env
+
+# 其他
+README.md
+*.md
+*.log
